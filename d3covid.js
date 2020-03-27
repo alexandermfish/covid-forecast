@@ -37,7 +37,7 @@ d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_co
     drawPredictionTile(usData, "usa");
 
     drawPredictionTile(skData, "south korea");
-    drawPredictionTile(deData, "germany");
+    //drawPredictionTile(deData, "germany");
 
 
 
@@ -86,7 +86,7 @@ function drawPredictionTile(dataSet, title){
 
         // Set the dimensions of the canvas / graph
     var margin = {top: 50, right: 40, bottom: 50, left:150},
-        width = 220 - margin.left - margin.right,
+        width = 230 - margin.left - margin.right,
         height = 640 - margin.top - margin.bottom;
 
     

@@ -15,6 +15,20 @@ html,body{
     
 }
 
+
+#datasource{
+    font-size: 8pt;
+    color: ivory;
+}
+
+a{
+    color: ivory;
+    text-transform: lowercase; 
+    filter: drop-shadow(4px)
+    
+}
+
+
 #number{
     padding-top: 80px;
     opacity: 0.7;
@@ -41,13 +55,13 @@ p{
 }
 
 svg{
-    filter: hue-rotate(50%);
-    opacity: 0.85;
-    background-color: rgb(19, 19, 19);
-    box-shadow: rgba(0, 0, 0, 0.274) 3px 3px 5px 2px;
+    
+    opacity: 0.82;
+    background-color: rgb(14, 14, 14);
+    box-shadow: rgba(0, 0, 0, 0.322) 3px 3px 5px 3px;
     fill: ivory;
     margin: 1%;
-    
+     
 
 }
 
