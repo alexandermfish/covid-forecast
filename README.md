@@ -1,1 +1,1 @@
-# covidforecast.github.io
+# covidforecast
