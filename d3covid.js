@@ -269,16 +269,22 @@ function drawPredictionTile(dataSet, title){
         .style("font-size", fontSizeNumber);
 
         var date = new Date();
-        var formattedDate = date.getUTCFullYear()+"-"+(date.getMonth()+1)+'-'+(date.getUTCDate()-1);
+        date.setDate(date.getUTCDate() - 1)
+        var formattedDate = date.getUTCFullYear()+"-"+(date.getUTCMonth()+1)+'-'+(date.getUTCDate());
         
         incrementSection=incrementSection+40;
+        if (title === "queensland" || title === "nsw" || title === "Vic"){
+            var add3pm = "At 3pm aest ";
+        }
+        else add3pm="As of ";
         svg.append("text")             
         .attr("transform",
             "translate(" + ((width+margin.left+margin.right)/2 -150)+ " ," + (incrementSection) + ")").attr("id","number")
         .style("text-anchor", "middle")
         .style("opacity",opacityMedium)
         .style("border", "1px black")
-        .text("As of "+formattedDate)
+        
+        .text(add3pm +formattedDate)
         .style("font-size", smallerFont);
 
 
@@ -287,6 +293,7 @@ function drawPredictionTile(dataSet, title){
 function getCsvReadyDate(todayOrYesterday){
     //req format 1/22/20
     var date = new Date();
+    date.setDate(date.getUTCDate() - 1)
     if (todayOrYesterday === "yesterday"){
         date.setDate(date.getUTCDate() - 2);
     }
@@ -296,8 +303,10 @@ function getCsvReadyDate(todayOrYesterday){
     if (todayOrYesterday === "dayBeforeThat"){
         date.setDate(date.getUTCDate() - 4);
     }
+    formattedDate = (date.getUTCMonth()+1)+'/'+(date.getUTCDate()-1)+'/20'; //FIX THIS - BUGS OUT ON THE FIRST DAY OF THE MONTH
+    console.log(todayOrYesterday+ "cvsdate" + formattedDate);
+    return formattedDate;
     
-    return formattedDate = (date.getMonth()+1)+'/'+(date.getUTCDate()-1)+'/20';
 
 }
 
@@ -317,14 +326,15 @@ function calculateRollingPredictionMultiplier(dataSet, yesterdayOrToday){
 
     var date = new Date();
         date.setDate(date.getUTCDate()-(1+day));
+        console.log("today:" + date)
         
         var yesterday = new Date();
         yesterday.setDate(yesterday.getUTCDate()-(2+day));
+        console.log("yesterday:" + yesterday)
         
         
     for ( i =1;i<=14;i++){
         
-
         var formattedDateOnThisDay = (date.getMonth()+1)+'/'+(date.getUTCDate()-(i+day))+'/20';
         var formattedDateOnPreviousDay = (yesterday.getMonth()+1)+'/'+(yesterday.getUTCDate()-(i+day))+'/20';
 
