@@ -67,10 +67,10 @@ function drawPredictionTile(dataSet, title){
     var yesterdaysMultiplier=(yesterdayConfirmed/dayBeforeConfirmed);    
     var yesterdaysMultiplierString = yesterdaysMultiplier.toFixed(2);
 
-    var tomorrowsPrediction = calculateRollingPredictionMultiplier(dataSet, "today")* todayConfirmed;
-    var predictionMultiplierString = calculateRollingPredictionMultiplier(dataSet, "today").toFixed(2);
-    var predictionMultiplier = calculateRollingPredictionMultiplier(dataSet, "today");    
-    var todaysPrediction = calculateRollingPredictionMultiplier(dataSet, "yesterday") * yesterdayConfirmed;
+    var tomorrowsPrediction = calculateRollingPredictionMultiplier(dataSet, "today", title)* todayConfirmed;
+    var predictionMultiplierString = calculateRollingPredictionMultiplier(dataSet, "today",title).toFixed(2);
+    var predictionMultiplier = calculateRollingPredictionMultiplier(dataSet, "today",title);    
+    var todaysPrediction = calculateRollingPredictionMultiplier(dataSet, "yesterday",title) * yesterdayConfirmed;
     var fillColourPredicted = "red";
     if(todaysPrediction >todayConfirmed){
         fillColourPredicted = "cyan"
@@ -300,11 +300,11 @@ function getCsvReadyDate(todayOrYesterday){
         date.setDate(date.getUTCDate() - 4);
     }
     formattedDate = (date.getUTCMonth()+1)+'/'+(date.getUTCDate())+'/20'; //FIX THIS - BUGS OUT ON THE FIRST DAY OF THE MONTH
-    console.log(todayOrYesterday+ "cvsdate" + formattedDate);
+    console.log(todayOrYesterday+ " CSVdate " + formattedDate);
     return formattedDate;
 }
 
-function calculateRollingPredictionMultiplier(dataSet, yesterdayOrToday){  
+function calculateRollingPredictionMultiplier(dataSet, yesterdayOrToday,title){  
     
     var day = 0;
     var twoWeekMultiplierCumulative =0;
@@ -331,8 +331,8 @@ function calculateRollingPredictionMultiplier(dataSet, yesterdayOrToday){
 
     twoWeekMultiplierAverage = twoWeekMultiplierCumulative/14;
     twoWeekChangeInMultiplierAverage = twoWeekMultiplierCumulative/14;
-    console.log(twoWeekMultiplierAverage);
-    console.log(twoWeekChangeInMultiplierAverage);
+    console.log(title + ", non rounded multiplier " + yesterdayOrToday+" "+ twoWeekMultiplierAverage);
+    //console.log(twoWeekChangeInMultiplierAverage);
     return twoWeekMultiplierAverage;
 }
 
