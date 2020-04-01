@@ -5,7 +5,7 @@
 d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", function(error,data){
 
     let ausData = data.filter(function(row) {return (row["Country/Region"] ==="Australia" )});
-    let italyData = data.filter(function(row) {return (row["Country/Region"] ==="Italy" )});
+    let itData = data.filter(function(row) {return (row["Country/Region"] ==="Italy" )});
     let nzData = data.filter(function(row) {return (row["Country/Region"] ==="New Zealand" )});
 
     let usData = data.filter(function(row) {return (row["Country/Region"] ==="US" )});
@@ -32,13 +32,12 @@ d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_co
 
     drawPredictionTile(nzData, "new zealand");
 
-    drawPredictionTile(italyData, "italy");
+    drawPredictionTile(itData, "italy");
 
     drawPredictionTile(usData, "usa");
 
     drawPredictionTile(skData, "south korea");
     //drawPredictionTile(deData, "germany");
-
 
 
 });
@@ -81,9 +80,6 @@ function drawPredictionTile(dataSet, title){
         fillColourDaily = "cyan"
     }
     
-
-
-
         // Set the dimensions of the canvas / graph
     var margin = {top: 50, right: 40, bottom: 50, left:150},
         width = 230 - margin.left - margin.right,
@@ -303,11 +299,9 @@ function getCsvReadyDate(todayOrYesterday){
     if (todayOrYesterday === "dayBeforeThat"){
         date.setDate(date.getUTCDate() - 4);
     }
-    formattedDate = (date.getUTCMonth()+1)+'/'+(date.getUTCDate()-1)+'/20'; //FIX THIS - BUGS OUT ON THE FIRST DAY OF THE MONTH
+    formattedDate = (date.getUTCMonth()+1)+'/'+(date.getUTCDate())+'/20'; //FIX THIS - BUGS OUT ON THE FIRST DAY OF THE MONTH
     console.log(todayOrYesterday+ "cvsdate" + formattedDate);
     return formattedDate;
-    
-
 }
 
 function calculateRollingPredictionMultiplier(dataSet, yesterdayOrToday){  
@@ -315,37 +309,24 @@ function calculateRollingPredictionMultiplier(dataSet, yesterdayOrToday){
     var day = 0;
     var twoWeekMultiplierCumulative =0;
     var twoWeekMultiplierAverage =0;
-   
-    
     if( yesterdayOrToday === "yesterday") {
         day =1;
     }
     if( yesterdayOrToday === "twoWeeksAgo") {
         day =14;
     }
-
     var date = new Date();
         date.setDate(date.getUTCDate()-(1+day));
-        console.log("today:" + date)
-        
         var yesterday = new Date();
-        yesterday.setDate(yesterday.getUTCDate()-(2+day));
-        console.log("yesterday:" + yesterday)
+        yesterday.setDate(yesterday.getUTCDate()-(2+day)); 
         
-        
-    for ( i =1;i<=14;i++){
-        
+    for ( i =0;i<14;i++){  
         var formattedDateOnThisDay = (date.getMonth()+1)+'/'+(date.getUTCDate()-(i+day))+'/20';
         var formattedDateOnPreviousDay = (yesterday.getMonth()+1)+'/'+(yesterday.getUTCDate()-(i+day))+'/20';
-
-        
         var confirmedCasesOnThisDay = dataSet[0][formattedDateOnThisDay];
         var confirmedCasesOnPreviousDay = dataSet[0][formattedDateOnPreviousDay];
         var changeMultiplierToday = confirmedCasesOnThisDay/confirmedCasesOnPreviousDay;
-  
-        twoWeekMultiplierCumulative = twoWeekMultiplierCumulative + changeMultiplierToday;
-        
-        
+        twoWeekMultiplierCumulative = twoWeekMultiplierCumulative + changeMultiplierToday;    
     }
 
     twoWeekMultiplierAverage = twoWeekMultiplierCumulative/14;
