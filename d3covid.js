@@ -49,6 +49,7 @@ function drawPredictionTile(dataSet, title){
     var dayBeforeThatString = getCsvReadyDate("dayBeforeThat");
     var dayBeforeString = getCsvReadyDate("dayBefore");
     var yesterdayString = getCsvReadyDate("yesterday");
+    console.log(yesterdayString);
     var todayString = getCsvReadyDate("today");
     
     
@@ -289,15 +290,18 @@ function drawPredictionTile(dataSet, title){
 function getCsvReadyDate(todayOrYesterday){
     //req format 1/22/20
     var date = new Date();
-    date.setDate(date.getUTCDate() - 1)
+    
     if (todayOrYesterday === "yesterday"){
         date.setDate(date.getUTCDate() - 2);
     }
-    if (todayOrYesterday === "dayBefore"){
+    else if (todayOrYesterday === "dayBefore"){
         date.setDate(date.getUTCDate() - 3);
     }
-    if (todayOrYesterday === "dayBeforeThat"){
+    else if (todayOrYesterday === "dayBeforeThat"){
         date.setDate(date.getUTCDate() - 4);
+    }
+    else{
+        date.setDate(date.getUTCDate() - 1)
     }
     formattedDate = (date.getUTCMonth()+1)+'/'+(date.getUTCDate())+'/20'; //FIX THIS - BUGS OUT ON THE FIRST DAY OF THE MONTH
     console.log(todayOrYesterday+ " CSVdate " + formattedDate);
@@ -306,23 +310,26 @@ function getCsvReadyDate(todayOrYesterday){
 
 function calculateRollingPredictionMultiplier(dataSet, yesterdayOrToday,title){  
     
-    var day = 0;
+    var today = 1;
     var twoWeekMultiplierCumulative =0;
     var twoWeekMultiplierAverage =0;
     if( yesterdayOrToday === "yesterday") {
-        day =1;
+        yesterday =2;
     }
-    if( yesterdayOrToday === "twoWeeksAgo") {
-        day =14;
-    }
-    var date = new Date();
-        date.setDate(date.getUTCDate()-(1+day));
+    
+    
+
+
+
+  
+    for ( i =1;i<=14;i++){  
+        var today = new Date();
         var yesterday = new Date();
-        yesterday.setDate(yesterday.getUTCDate()-(2+day)); 
+        today.setDate(today.getUTCDate() - i);
+        yesterday.setDate(yesterday.getUTCDate()-(i+1));
         
-    for ( i =0;i<14;i++){  
-        var formattedDateOnThisDay = (date.getMonth()+1)+'/'+(date.getUTCDate()-(i+day))+'/20';
-        var formattedDateOnPreviousDay = (yesterday.getMonth()+1)+'/'+(yesterday.getUTCDate()-(i+day))+'/20';
+        var formattedDateOnThisDay = (today.getMonth()+1)+'/'+(today.getUTCDate())+'/20';
+        var formattedDateOnPreviousDay = (yesterday.getMonth()+1)+'/'+(yesterday.getUTCDate())+'/20';
         var confirmedCasesOnThisDay = dataSet[0][formattedDateOnThisDay];
         var confirmedCasesOnPreviousDay = dataSet[0][formattedDateOnPreviousDay];
         var changeMultiplierToday = confirmedCasesOnThisDay/confirmedCasesOnPreviousDay;
